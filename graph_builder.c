@@ -51,10 +51,10 @@ void addNeighbor(struct Map *map, int sourceloc, int destloc){
 	return newlocation;
 }
 
-int main(){
+struct Map *create_map(int numlocations){
 	// Create a map
-	struct Map *map = addMap(30);
-	// 30 for the locations in our Romania input
+	struct Map *map = addMap(numlocations);
+	// numlocations = 30 for the locations in our Romania input
 	// We can adjust this later to fetch data from a file or API
 	// e.g CSV, OpenStreet Map, Google Map
 
@@ -91,6 +91,22 @@ int main(){
 	addNeighbor(map, 9, 8);
 	addNeighbor(map, 9, 11);
 
+	return map;
+}
+
+int main(){
+	struct Map *map = create_map(30);
+
+	/* Do DFS over graph
+	// ALGORITHM
+	Visit source vertex - Mark as visited.
+	LOOP
+	    Visit unvisited neighbor vertices - mark as visited
+	    At dead end -> Backtrack one vertex
+	    Continue visiting unvisited vertices
+	    If source vertex is reached, HALT
+	    If unvisited vertices still remain, start from there.
+	*/
 	for (int u = 0; u < 30; u++) {
 		// printf("%d ->", map -> locationlist[u]->locationid) + 1;
 
