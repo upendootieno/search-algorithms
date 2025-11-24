@@ -1,5 +1,21 @@
+/* NOTES
+
+The graph in this code is implemented according to the
+defintion in Cormen, Introduction to Algorithms
+Third Edition Chapter 22.1
+
+To model the problem with 'correct' wording the following
+notations are used
+G - Map
+V - numlocations
+v - LocationNode
+Adj - locationlist
+Adj[u] - locationlist[u]
+
+*/
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 // Linked List to represent locations and neighbors
 typedef struct LocationNode{
@@ -48,7 +64,6 @@ void addNeighbor(struct Map *map, int sourceloc, int destloc){
 	struct LocationNode *newlocation = addLocation(destloc);
 	newlocation -> neighbor = map -> locationlist[sourceloc];
 	map -> locationlist[sourceloc] = newlocation;
-	return newlocation;
 }
 
 struct Map *create_map(int numlocations){
@@ -94,19 +109,51 @@ struct Map *create_map(int numlocations){
 	return map;
 }
 
+/* Do DFS over graph
+// ALGORITHM
+Visit source vertex - Mark as visited.
+LOOP
+    Visit unvisited neighbor vertices - mark as visited
+    At dead end -> Backtrack one vertex
+    Continue visiting unvisited vertices
+    If source vertex is reached, HALT
+    If unvisited vertices still remain, start from there.
+*/
+
+void DFS(struct Map* map, int location, bool visited[]) {
+    visited[location] = true;
+    printf("%d ", location);
+
+	struct LocationNode* currentNode = map->locationlist[location];
+	// locationlist[location] is already a pointer to the head node
+    while (currentNode) {
+        int adjacentVertex = currentNode->locationid;
+        if (!visited[adjacentVertex]) {
+            DFS(map, adjacentVertex, visited);
+        }
+        currentNode = currentNode->neighbor; // Go to next location
+    }
+}
+
+void DFSTraversal(struct Map* map, int* order, int orderSize) {
+    bool* visited = (bool*)malloc(map->numlocations * sizeof(bool));
+    for (int i = 0; i < map->numlocations; i++) {
+        visited[i] = false;
+    }
+
+    for (int i = 0; i < orderSize; i++) {
+        if (!visited[order[i]]) {
+            DFS(map, order[i], visited);
+        }
+    }
+
+    free(visited);
+}
+
 int main(){
 	struct Map *map = create_map(30);
+    // Print the map (adjacency list)
 
-	/* Do DFS over graph
-	// ALGORITHM
-	Visit source vertex - Mark as visited.
-	LOOP
-	    Visit unvisited neighbor vertices - mark as visited
-	    At dead end -> Backtrack one vertex
-	    Continue visiting unvisited vertices
-	    If source vertex is reached, HALT
-	    If unvisited vertices still remain, start from there.
-	*/
 	for (int u = 0; u < 30; u++) {
 		// printf("%d ->", map -> locationlist[u]->locationid) + 1;
 
@@ -120,22 +167,12 @@ int main(){
 
 		printf("\n");
 	};
-	// printf(map);
+
+    int order[] = {1, 3, 26, 7};
+    int orderSize = sizeof(order) / sizeof(order[0]);
+
+    DFSTraversal(map, order, orderSize);
+
+
 	return 0;
 }
-
-/* NOTES
-
-The graph in this code is implemented according to the
-defintion in Cormen, Introduction to Algorithms
-Third Edition Chapter 22.1
-
-To model the problem with 'correct' wording the following
-notations are used
-G - Map
-V - numlocations
-v - LocationNode
-Adj - locationlist
-Adj[u] - locationlist[u]
-
-*/

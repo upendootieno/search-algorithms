@@ -5,9 +5,4 @@
 
 #### Open Issues
 
-- DFS traversal algorithm to traverse the graph created.
-
 - Optionally reading data from a file
-
-- Dynamic allocation of memory for location lists
-
