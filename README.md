@@ -7,8 +7,11 @@
 
 DFS on Romania Map:
 
-gcc romania_map.c dfs.c -o romani_dfs
-./romania_dfs
+gcc -std=c11 -Wall -Wextra romania_dfs.c dfs.c romania_map.c map_tools.c -o romania_dfs
+
+gcc -std=c11 -Wall -Wextra astar.c dfs.c romania_map.c map_tools.c -o astar
+
+gcc -std=c11 -Wall -Wextra tsp_sa.c romania_map.c map_tools.c -lm -o tsp_sa
 
 #### Open Issues
 

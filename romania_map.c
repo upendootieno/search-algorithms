@@ -1,4 +1,4 @@
-#include "dfs.h"
+#include "romania_map.h"
 #include "map_tools.h"
 
 struct Map *create_map(int numlocations){
@@ -41,16 +41,5 @@ struct Map *create_map(int numlocations){
 	addNeighbor(map, 9, 8);
 	addNeighbor(map, 9, 11);
 
-	return map;
-}
-
-	int main(void){
-		struct Map *map = create_map(30);
-		if (!map) return 1;
-
-		int order[] = {0};
-		DFSTraversal(map, order, 1);
-		printf("\n");
-
-		return 0;
+		return map;
 	}
